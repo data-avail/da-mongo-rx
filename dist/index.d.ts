@@ -13,12 +13,18 @@ declare module mongoRx {
         ok: boolean;
         n: number;
     }
-    class MongoDb {
-        private db;
-        constructor(connectionString: string, collections: string[]);
-        runCommand(collection: string, command: any): Rx.Observable<ICommandResult>;
+    class Collection {
+        private coll;
+        constructor(coll: any);
         find<T>(collection: string, query: any): ICursor;
         insert<T>(collection: string, data: any): Rx.Observable<any>;
+    }
+    class MongoDb {
+        private db;
+        private collections;
+        constructor(connectionString: string, collectionNames: string[]);
+        getCollection(name: string): any;
+        runCommand(collection: string, command: any): Rx.Observable<ICommandResult>;
     }
 }
 export = mongoRx;

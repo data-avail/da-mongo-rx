@@ -3,18 +3,31 @@ var Rx = require("rx");
 var mongojs = require('mongojs');
 var mongoRx;
 (function (mongoRx) {
-    var MongoDb = (function () {
-        function MongoDb(connectionString, collections) {
-            this.db = mongojs(connectionString, collections);
+    var Collection = (function () {
+        function Collection(coll) {
+            this.coll = coll;
         }
-        MongoDb.prototype.runCommand = function (collection, command) {
-            return Rx.Observable.fromNodeCallback(this.db.runCommand)(command);
-        };
-        MongoDb.prototype.find = function (collection, query) {
+        Collection.prototype.find = function (collection, query) {
             return null;
         };
-        MongoDb.prototype.insert = function (collection, data) {
-            return Rx.Observable.fromNodeCallback(this.db[collection].insert, this.db[collection])(data);
+        Collection.prototype.insert = function (collection, data) {
+            return Rx.Observable.fromNodeCallback(this.coll.insert, this.coll)(data);
+        };
+        return Collection;
+    })();
+    mongoRx.Collection = Collection;
+    var MongoDb = (function () {
+        function MongoDb(connectionString, collectionNames) {
+            var _this = this;
+            this.collections = {};
+            this.db = mongojs(connectionString, collectionNames);
+            collectionNames.forEach(function (x) { return _this.collections[x] = new Collection(_this.db[x]); });
+        }
+        MongoDb.prototype.getCollection = function (name) {
+            return this.collections[name];
+        };
+        MongoDb.prototype.runCommand = function (collection, command) {
+            return Rx.Observable.fromNodeCallback(this.db.runCommand)(command);
         };
         return MongoDb;
     })();

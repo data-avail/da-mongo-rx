@@ -7,7 +7,7 @@ describe("create tests",  () => {
 	
 	it("create some test record",  (done) => {		
 		var db = new mongoRx.MongoDb("192.168.0.103:8082/test", ["test"]);		
-		db.insert("test", {test : "some"}).subscribe((val) => done(null));																
+		db.getCollection("test").insert("test", {test : "some"}).subscribe((val) => done(null));																
 	})
 		
 }) 

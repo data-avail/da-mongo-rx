@@ -18,18 +18,11 @@ module mongoRx {
 		n : number
 	}
 	
-	export class MongoDb {
-		
-		private db: any;
-		
-		constructor(connectionString: string, collections: string[]) {			
-			this.db = mongojs(connectionString, collections);														
+	export class Collection {
+		constructor(private coll: any) {
+			
 		}
-		
-		runCommand(collection: string, command: any) : Rx.Observable<ICommandResult> {
-			return (<any>Rx.Observable).fromNodeCallback(this.db.runCommand)(command);		
-		} 
-		
+				
 		/**
 		 * Create query stream
 		 */
@@ -40,9 +33,27 @@ module mongoRx {
 		}					
 		
 		insert<T>(collection: string, data: any) : Rx.Observable<any> {
-			return (<any>Rx.Observable).fromNodeCallback(this.db[collection].insert, this.db[collection])(data);
-			
-		}		
+			return (<any>Rx.Observable).fromNodeCallback(this.coll.insert, this.coll)(data);			
+		}
+	}
+		
+	export class MongoDb {
+		
+		private db: any;
+		private collections: any = {};
+		
+		constructor(connectionString: string, collectionNames: string[]) {			
+			this.db = mongojs(connectionString, collectionNames);
+			collectionNames.forEach(x => this.collections[x] = new Collection(this.db[x]));														
+		}
+		
+		getCollection(name: string) : any{
+			return this.collections[name];
+		}
+				
+		runCommand(collection: string, command: any) : Rx.Observable<ICommandResult> {
+			return (<any>Rx.Observable).fromNodeCallback(this.db.runCommand)(command);		
+		} 					
 	}
 	
 
