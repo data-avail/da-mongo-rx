@@ -8,6 +8,8 @@
 
 // A task runner that calls the Typescipt compiler (tsc) and 
 // Compiles a HelloWorld.ts program
+
+/*
 {
 	"version": "0.1.0",
 	
@@ -18,15 +20,70 @@
 	"isShellCommand": true,
 
 	// Show the output window only if unrecognized errors occur. 
+	"showOutput": "always",
+	
+	// args is the HelloWorld program to compile.
+	"args": [],
+	
+	// use the standard tsc problem matcher to find compile problems
+	// in the output.
+	"problemMatcher": "$tsc"
+	
+}
+*/
+
+{
+  "version": "0.1.0",
+  "command": "npm",
+  "windows": {
+    "command": "npm"
+  },
+  "isShellCommand": true, 
+  "tasks": [
+    {
+      // Build task, Ctrl+Shift+B
+      // "npm install --loglevel info"
+      "taskName": "build",
+      "isBuildCommand": true,
+	  "args": [
+		  "run-script"
+	  ],
+	  "problemMatcher": "$tsc"
+    },
+    {
+      // Test task, Ctrl+Shift+T
+      // "npm test"
+      "taskName": "test",
+      "isTestCommand": true
+    }
+  ]
+}
+
+
+
+/*
+{
+	"version": "0.1.0",
+	
+	// The command is tsc. Assumes that tsc has been installed using npm install -g typescript
+	"command": "npm",
+	
+	// The command is a shell script
+	"isShellCommand": true,
+
+	// Show the output window only if unrecognized errors occur. 
 	"showOutput": "silent",
 	
 	// args is the HelloWorld program to compile.
-	"args": ["-p", "."],
+	"args": ["test"],
 	
 	// use the standard tsc problem matcher to find compile problems
 	// in the output.
 	"problemMatcher": "$tsc"
 }
+*/
+
+
 
 // A task runner that calls the Typescipt compiler (tsc) and 
 // compiles based on a tsconfig.json file that is present in

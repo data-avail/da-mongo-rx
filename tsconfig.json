@@ -1,16 +1,16 @@
 {
-  "version": "1.5.0",
+  "version": "1.5.3",
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
     "declaration": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "removeComments": true,
     "noLib": false,
     "emitDecoratorMetadata": false,
     "outDir": "./dist"
   },
   "files" : [
-    "index.ts"
+    "src/index.ts"
   ]
 }

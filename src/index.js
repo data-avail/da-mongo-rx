@@ -10,11 +10,14 @@ var mongoRx;
         MongoDb.prototype.runCommand = function (collection, command) {
             return Rx.Observable.fromNodeCallback(this.db.runCommand)(command);
         };
+        /**
+         * Create query stream
+         */
         MongoDb.prototype.find = function (collection, query) {
             return null;
         };
         MongoDb.prototype.insert = function (collection, data) {
-            return Rx.Observable.fromNodeCallback(this.db[collection].insert, this.db[collection])(data);
+            return Rx.Observable.fromNodeCallback(this.db[collection].insert)(data);
         };
         return MongoDb;
     })();
