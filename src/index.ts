@@ -34,16 +34,12 @@ module mongoRx {
 		 * Create query stream
 		 */
 		find<T>(collection: string, query: any) : ICursor {
-			return null;				
+						
+			return null;
+									
 		}					
 		
 		insert<T>(collection: string, data: any) : Rx.Observable<any> {
-			/*
-			this.db[collection].insert(data, (err: any, data: any) => {
-				console.log(err, data);
-			});
-			return null;
-			*/
 			return (<any>Rx.Observable).fromNodeCallback(this.db[collection].insert, this.db[collection])(data);
 			
 		}		
