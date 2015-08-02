@@ -4,12 +4,14 @@ import chai = require('chai');
 import mongoRx = require('../dist/index');
 var expect = chai.expect;
 
+const MONGO_URI = process.env.npm_config_MONGO_URI || process.env.npm_package_config_MONGO_URI;
+
 describe("find tests",  () => {
 
 	var coll: mongoRx.Collection;	
 	before((done) => {
-		var db = new mongoRx.MongoDb(process.env.npm_package_config_MONGO_URI, ["test"]);		
-		coll = db.getCollection("test");
+		var db = new mongoRx.MongoDb(MONGO_URI, ["find"]);		
+		coll = db.getCollection("find");
 		coll.insert({name : "aaa"})
 		.concat(coll.insert({name : "bbb"}))
 		.concat(coll.insert({name : "ccc"}))
@@ -27,17 +29,17 @@ describe("find tests",  () => {
 			expect(val).has.lengthOf(3); 
 			expect(val[0]).has.property("name");
 			expect((<any>val[0]).name).to.eq("aaa"); 
-		}, null, () => done())
+		}, null, done)
 																							
 	})
 
-	it.only("find records as stream",  (done) => {
+	it("find records as stream",  (done) => {
 						
 		coll.find({}).query<any>()
 		.subscribe((val) => {
 			expect(val).has.property("_id"); 
 			expect(val).has.property("name"); 
-		}, null, () => done())
+		}, null, done)
 																							
 	})
 		

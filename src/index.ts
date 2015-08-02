@@ -74,15 +74,25 @@ module mongoRx {
 		private db: any;
 		private collections: any = {};
 		
+		/**
+		 * Create database connection.
+		 * 
+		 */
 		constructor(connectionString: string, collectionNames: string[]) {			
 			this.db = mongojs(connectionString, collectionNames);
 			collectionNames.forEach(x => this.collections[x] = new Collection(this.db[x]));														
 		}
 		
-		getCollection(name: string) : any{
+		/**
+		 * Get collection by name.
+		 */
+		getCollection(name: string) : Collection{
 			return this.collections[name];
 		}
-				
+		
+		/**
+		 * Run some mongo command.
+		 */		
 		runCommand(collection: string, command: any) : Rx.Observable<ICommandResult> {
 			return (<any>Rx.Observable).fromNodeCallback(this.db.runCommand)(command);		
 		} 					

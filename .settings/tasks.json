@@ -41,8 +41,6 @@
   "isShellCommand": true, 
   "tasks": [
     {
-      // Build task, Ctrl+Shift+B
-      // "npm install --loglevel info"
       "taskName": "build",
       "isBuildCommand": true,
 	  "args": [
@@ -51,8 +49,6 @@
 	  "problemMatcher": "$tsc"
     },
     {
-      // Test task, Ctrl+Shift+T
-      // "npm test"
       "taskName": "test",
       "isTestCommand": true
     }

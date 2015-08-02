@@ -24,7 +24,7 @@ declare module mongoRx {
         private db;
         private collections;
         constructor(connectionString: string, collectionNames: string[]);
-        getCollection(name: string): any;
+        getCollection(name: string): Collection;
         runCommand(collection: string, command: any): Rx.Observable<ICommandResult>;
     }
 }

@@ -7,7 +7,7 @@
     "test": "test"
   },
   "config": {
-    "MONGO_URI": "192.168.0.103:8082/test"
+    "MONGO_URI": "127.0.0.1"
   },
   "scripts": {
     "build": "tsc",
