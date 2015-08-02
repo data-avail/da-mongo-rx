@@ -5,6 +5,8 @@ exposes [RxJS](https://github.com/Reactive-Extensions/RxJS) interfaces.
 
 Contains typeScript defintion files. 
 
+[Documentation](https://data-avail.github.io/da-mongo-rx)
+
 ## Test
 
 Set up uri for test db 
@@ -31,4 +33,4 @@ when neccessary.
 
 ## Documentation 
 
-Generate `typedoc ./src/index.ts` 
+Generate `typedoc ./src/mongo-rx.ts` 
