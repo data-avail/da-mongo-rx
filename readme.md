@@ -1,7 +1,7 @@
 # Mongo-Rx
 
-Thin layer on top of [https://github.com/mafintosh/mongojs](mongojs) library 
-exposes [https://github.com/Reactive-Extensions/RxJS](RxJS) interfaces.
+Thin layer on top of [mongojs](https://github.com/mafintosh/mongojs) library 
+exposes [RxJS](https://github.com/Reactive-Extensions/RxJS) interfaces.
 
 Contains typeScript defintion files. 
 
