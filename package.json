@@ -1,7 +1,7 @@
 {
   "name": "da-mongo-rx",
   "version": "1.0.0",
-  "description": "",
+  "description": "Thin layer on top of mongojs library exposes RxJS interfaces.",
   "main": "dist/mongo-rx.js",
   "directories": {
     "test": "test"
@@ -13,14 +13,30 @@
     "build": "tsc",
     "test": "mocha"
   },
-  "author": "",
-  "license": "ISC",
+  "repository" :
+  {
+     "type" : "git",
+      "url" : "https://github.com/data-avail/da-mongo-rx"
+  },  
+  "bugs" : {
+     "url" : "https://github.com/data-avail/da-mongo-rx/issues",
+      "email" : "max.putilov@gmail.com"    
+  }, 
+  "author": {
+    "email": "max.putilov@gmail.com",
+    "name": "Max Putilov",
+    "url": "http://huyakhuyak.blogspot.ru/"
+  },
+  "license": "MIT",
   "dependencies": {
-    "chai": "^3.2.0",
-    "mocha": "^2.2.5",
     "mongojs": "^1.2.1",
     "rx": "^2.5.3",
-    "rx-node": "^1.0.1",
+    "rx-node": "^1.0.1"
+    
+  }, 
+  "devDependencies" : {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5",    
     "typescript-require": "^0.2.9"
   }
 }
