@@ -28,3 +28,7 @@ usually watch rebuild proccess via `tsc -w` work much faster.
 
 This way use `tsc -w` in console and then run test task manually,
 when neccessary.   
+
+## Documentation 
+
+Generate `typedoc ./src/index.ts` 

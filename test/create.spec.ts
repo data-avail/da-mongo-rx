@@ -1,7 +1,7 @@
 /// <reference path="../typings/tsd.d.ts"/>
-/// <reference path="../dist/index.d.ts"/>
+/// <reference path="../dist/mongo-rx.d.ts"/>
 import chai = require('chai');
-import mongoRx = require('../dist/index');
+import mongoRx = require('../dist/mongo-rx');
 var expect = chai.expect;
 
 const MONGO_URI = process.env.npm_config_MONGO_URI || process.env.npm_package_config_MONGO_URI;

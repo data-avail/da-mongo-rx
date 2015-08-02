@@ -2,7 +2,7 @@
   "name": "da-mongo-rx",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/mongo-rx.js",
   "directories": {
     "test": "test"
   },

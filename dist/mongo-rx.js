@@ -57,7 +57,7 @@ var mongoRx;
         MongoDb.prototype.getCollection = function (name) {
             return this.collections[name];
         };
-        MongoDb.prototype.runCommand = function (collection, command) {
+        MongoDb.prototype.runCommand = function (command) {
             return Rx.Observable.fromNodeCallback(this.db.runCommand)(command);
         };
         return MongoDb;

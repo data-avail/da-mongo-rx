@@ -15,7 +15,7 @@ declare module mongoRx {
     class Collection {
         private coll;
         constructor(coll: any);
-        find<T>(query: any): ICursor;
+        find(query: any): ICursor;
         private fromNode<T>(funcName);
         insert<T>(data: any): Rx.Observable<T>;
         remove(filter: any): Rx.Observable<any>;
@@ -25,7 +25,7 @@ declare module mongoRx {
         private collections;
         constructor(connectionString: string, collectionNames: string[]);
         getCollection(name: string): Collection;
-        runCommand(collection: string, command: any): Rx.Observable<ICommandResult>;
+        runCommand(command: any): Rx.Observable<ICommandResult>;
     }
 }
 export = mongoRx;
