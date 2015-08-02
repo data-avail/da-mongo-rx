@@ -17,7 +17,9 @@ declare module mongoRx {
         private coll;
         constructor(coll: any);
         find<T>(collection: string, query: any): ICursor;
-        insert<T>(collection: string, data: any): Rx.Observable<any>;
+        private fromNode<T>(funcName);
+        insert<T>(collection: string, data: any): Rx.Observable<T>;
+        remove(filter: any): Rx.Observable<any>;
     }
     class MongoDb {
         private db;

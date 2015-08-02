@@ -10,8 +10,14 @@ var mongoRx;
         Collection.prototype.find = function (collection, query) {
             return null;
         };
+        Collection.prototype.fromNode = function (funcName) {
+            return Rx.Observable.fromNodeCallback(this.coll[funcName], this.coll);
+        };
         Collection.prototype.insert = function (collection, data) {
-            return Rx.Observable.fromNodeCallback(this.coll.insert, this.coll)(data);
+            return this.fromNode("insert")(data);
+        };
+        Collection.prototype.remove = function (filter) {
+            return this.fromNode("remove")(filter);
         };
         return Collection;
     })();

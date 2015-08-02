@@ -6,6 +6,9 @@
   "directories": {
     "test": "test"
   },
+  "config": {
+      "MONGO_URI": "192.168.0.103:8082/test"  
+  },
   "scripts": {
     "build": "tsc",
     "test": "mocha"

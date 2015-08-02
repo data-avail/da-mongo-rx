@@ -32,9 +32,17 @@ module mongoRx {
 									
 		}					
 		
-		insert<T>(collection: string, data: any) : Rx.Observable<any> {
-			return (<any>Rx.Observable).fromNodeCallback(this.coll.insert, this.coll)(data);			
+		private fromNode<T>(funcName: string) : (arg1?: any, arg2?: any, arg3?: any) => Rx.Observable<T> {
+			return (<any>Rx.Observable).fromNodeCallback(this.coll[funcName], this.coll);
 		}
+		
+		insert<T>(collection: string, data: any) : Rx.Observable<T> {
+			return this.fromNode<T>("insert")(data);			
+		}
+		
+		remove(filter: any) : Rx.Observable<any> {
+			return this.fromNode("remove")(filter);
+		} 
 	}
 		
 	export class MongoDb {
