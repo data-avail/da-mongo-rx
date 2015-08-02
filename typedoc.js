@@ -4,7 +4,7 @@ module.exports = {
 	excludeExternals: true,
 	"module": "commonjs",
 	"entryPoint": "mongo-rx",
-	"mode": "modules",
+	"mode": "file",
 	"excludeNotExported": false
 }
 	

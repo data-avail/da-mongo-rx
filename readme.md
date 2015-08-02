@@ -31,4 +31,4 @@ when neccessary.
 
 ## Documentation 
 
-Generate `typedoc ./src/index.ts` 
+Generate `typedoc ./src/mongo-rx.ts` 
