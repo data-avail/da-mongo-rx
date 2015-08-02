@@ -14,16 +14,15 @@ describe("create / remove tests",  () => {
 	
 	it("create some test record",  (done) => {
 						
-		coll.insert("test", {test : "some"})
+		coll.insert({test : "some"})
 		.subscribe((val: any) => {
 			expect(val).is.exist;
 			expect(val.test).to.eq("some1"); 
-			console.log(val);
 			done(null); 
 		});																
 	})
 
-	it.skip("remove all tests record",  (done) => {				
+	it("remove all tests record",  (done) => {				
 		coll.remove({})
 		.subscribe((val) => done(null));																
 	})

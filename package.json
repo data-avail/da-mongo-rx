@@ -7,7 +7,7 @@
     "test": "test"
   },
   "config": {
-      "MONGO_URI": "192.168.0.103:8082/test"  
+    "MONGO_URI": "192.168.0.103:8082/test"
   },
   "scripts": {
     "build": "tsc",
@@ -19,7 +19,8 @@
     "chai": "^3.2.0",
     "mocha": "^2.2.5",
     "mongojs": "^1.2.1",
-    "rx": "^2.5.3"
+    "rx": "^2.5.3",
+    "rx-node": "^1.0.1"
   },
   "devDependencies": {
     "typescript-require": "^0.2.9"

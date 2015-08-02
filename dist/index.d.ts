@@ -2,7 +2,6 @@
 import Rx = require("rx");
 declare module mongoRx {
     interface ICursor {
-        find(query: any): ICursor;
         sort(sort: any): ICursor;
         limit(count: number): ICursor;
         skip(count: number): ICursor;
@@ -16,9 +15,9 @@ declare module mongoRx {
     class Collection {
         private coll;
         constructor(coll: any);
-        find<T>(collection: string, query: any): ICursor;
+        find<T>(query: any): ICursor;
         private fromNode<T>(funcName);
-        insert<T>(collection: string, data: any): Rx.Observable<T>;
+        insert<T>(data: any): Rx.Observable<T>;
         remove(filter: any): Rx.Observable<any>;
     }
     class MongoDb {

@@ -1,11 +1,11 @@
 ///<reference path="../typings/tsd.d.ts"/>
 import Rx = require("rx");
 var mongojs = require('mongojs')
+var RxNode = require("rx-node");
 
 module mongoRx {
 		
 	export interface ICursor {
-		find(query: any) : ICursor
 		sort(sort: any) : ICursor
 		limit(count: number) : ICursor
 		skip(count: number) : ICursor		
@@ -18,25 +18,49 @@ module mongoRx {
 		n : number
 	}
 	
+	class Cursor implements ICursor {
+		constructor(private cursor: any) {			
+		}
+
+		private fromNode<T>(funcName: string) : (arg1?: any, arg2?: any, arg3?: any) => Rx.Observable<T> {
+			return (<any>Rx.Observable).fromNodeCallback(this.cursor[funcName], this.cursor);
+		}
+				
+		sort(sort: any) : ICursor {
+			return this.cursor.sort(sort);
+		}
+		
+		limit(count: number) : ICursor {
+			return this.cursor.limit(count);
+		}
+		
+		skip(count: number) : ICursor {
+			return this.cursor.limit(count);
+		}
+				
+		query<T>():  Rx.Observable<T> {
+			return RxNode.fromReadableStream(this.cursor);
+		}
+		
+		toArray<T>():  Rx.Observable<T[]> {
+			return this.fromNode<T[]>("toArray")();
+		}		
+	}
+	
 	export class Collection {
 		constructor(private coll: any) {
 			
 		}
 				
-		/**
-		 * Create query stream
-		 */
-		find<T>(collection: string, query: any) : ICursor {
-						
-			return null;
-									
+		find<T>(query: any) : ICursor {						
+			return new Cursor(this.coll.find(query));									
 		}					
 		
 		private fromNode<T>(funcName: string) : (arg1?: any, arg2?: any, arg3?: any) => Rx.Observable<T> {
 			return (<any>Rx.Observable).fromNodeCallback(this.coll[funcName], this.coll);
 		}
 		
-		insert<T>(collection: string, data: any) : Rx.Observable<T> {
+		insert<T>(data: any) : Rx.Observable<T> {
 			return this.fromNode<T>("insert")(data);			
 		}
 		
@@ -63,7 +87,6 @@ module mongoRx {
 			return (<any>Rx.Observable).fromNodeCallback(this.db.runCommand)(command);		
 		} 					
 	}
-	
 
 }
 
