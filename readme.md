@@ -1,7 +1,7 @@
 # Mongo-Rx
 
-Thin wrapper on top of (https://github.com/mafintosh/mongojs)[mongojs] library 
-exposes (https://github.com/Reactive-Extensions/RxJS)[RxJS] interfaces.
+Thin layer on top of [https://github.com/mafintosh/mongojs](mongojs) library 
+exposes [https://github.com/Reactive-Extensions/RxJS](RxJS) interfaces.
 
 Contains typeScript defintion files. 
 
@@ -20,11 +20,11 @@ Run test
 
 Project contians `tasks` file for Visual Studio Code
 
-+ Build - run `tsc`, same as `npm build`
++ Build - run `tsc`, same as `npm run-task build`
 + Test - run `mocha`, same as `npm test`
 
 For some reason VS Code take quite a time to start build,
-usually watch rebuild proccess via `tsc -w` works much faster.
+usually watch rebuild proccess via `tsc -w` work much faster.
 
 This way use `tsc -w` in console and then run test task manually,
 when neccessary.   
