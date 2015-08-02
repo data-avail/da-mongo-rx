@@ -1,5 +1,7 @@
 # Mongo-Rx
 
+[![Build Status](https://travis-ci.org/data-avail/da-mongo-rx.svg?branch=master)](https://travis-ci.org/data-avail/da-mongo-rx)
+
 Thin layer on top of [mongojs](https://github.com/mafintosh/mongojs) library 
 exposes [RxJS](https://github.com/Reactive-Extensions/RxJS) interfaces.
 
