@@ -1,0 +1,16 @@
+{
+  "version": "1.5.3",
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": false,
+    "outDir": "./dist"
+  },
+  "files" : [
+    "src/mongo-rx.ts"
+  ]
+}

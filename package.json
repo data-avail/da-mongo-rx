@@ -1,0 +1,28 @@
+{
+  "name": "da-mongo-rx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/mongo-rx.js",
+  "directories": {
+    "test": "test"
+  },
+  "config": {
+    "MONGO_URI": "127.0.0.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5",
+    "mongojs": "^1.2.1",
+    "rx": "^2.5.3",
+    "rx-node": "^1.0.1"
+  },
+  "devDependencies": {
+    "typescript-require": "^0.2.9"
+  }
+}
