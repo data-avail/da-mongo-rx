@@ -31,6 +31,7 @@ module mongoRx {
 		n : number
 	}
 	
+	
 	class Cursor implements ICursor {
 		constructor(private cursor: any) {			
 		}
