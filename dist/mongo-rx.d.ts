@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts" />
+
 import Rx = require("rx");
 declare module mongoRx {
     interface ICursor {

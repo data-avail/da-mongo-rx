@@ -1,6 +1,6 @@
 {
   "name": "da-mongo-rx",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Thin layer on top of mongojs library exposes RxJS interfaces.",
   "main": "dist/mongo-rx.js",
   "directories": {
@@ -10,18 +10,17 @@
     "MONGO_URI": "127.0.0.1"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "mocha"
+    "build": "gulp build",
+    "test": "gulp test"
   },
-  "repository" :
-  {
-     "type" : "git",
-      "url" : "https://github.com/data-avail/da-mongo-rx"
-  },  
-  "bugs" : {
-     "url" : "https://github.com/data-avail/da-mongo-rx/issues",
-      "email" : "max.putilov@gmail.com"    
-  }, 
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/data-avail/da-mongo-rx"
+  },
+  "bugs": {
+    "url": "https://github.com/data-avail/da-mongo-rx/issues",
+    "email": "max.putilov@gmail.com"
+  },
   "author": {
     "email": "max.putilov@gmail.com",
     "name": "Max Putilov",
@@ -29,14 +28,19 @@
   },
   "license": "MIT",
   "dependencies": {
+    "gulp-concat": "^2.6.0",
     "mongojs": "^1.2.1",
     "rx": "^2.5.3",
     "rx-node": "^1.0.1"
-    
-  }, 
-  "devDependencies" : {
+  },
+  "devDependencies": {
     "chai": "^3.2.0",
-    "mocha": "^2.2.5",    
-    "typescript-require": "^0.2.9"
+    "mocha": "^2.2.5",
+    "typescript-require": "^0.2.9",
+    "gulp": "^3.9.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-spawn-mocha": "^2.2.1",
+    "gulp-typescript": "^2.8.0",
+    "merge2": "^0.3.6"
   }
 }
