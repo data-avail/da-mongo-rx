@@ -28,7 +28,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "gulp-concat": "^2.6.0",
     "mongojs": "^1.2.1",
     "rx": "^2.5.3",
     "rx-node": "^1.0.1"
@@ -41,6 +40,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-spawn-mocha": "^2.2.1",
     "gulp-typescript": "^2.8.0",
-    "merge2": "^0.3.6"
+    "merge2": "^0.3.6",
+    "gulp-concat": "^2.6.0"
   }
 }
