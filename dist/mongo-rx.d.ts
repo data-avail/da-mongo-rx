@@ -12,6 +12,10 @@ declare module mongoRx {
         ok: boolean;
         n: number;
     }
+    interface IFindAndModifyResult {
+        doc: any;
+        command: ICommandResult;
+    }
     class Collection {
         private coll;
         constructor(coll: any);
@@ -20,7 +24,7 @@ declare module mongoRx {
         insert<T>(data: any): Rx.Observable<T>;
         remove(filter: any): Rx.Observable<any>;
         update(query: any, upd: any): Rx.Observable<any>;
-        findAndModify(upd: any): Rx.Observable<any>;
+        findAndModify(upd: any): Rx.Observable<IFindAndModifyResult>;
     }
     class MongoDb {
         private db;

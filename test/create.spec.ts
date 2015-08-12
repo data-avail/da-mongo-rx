@@ -6,7 +6,7 @@ var expect = chai.expect;
 
 const MONGO_URI = process.env.npm_config_MONGO_URI || process.env.npm_package_config_MONGO_URI;
 
-describe("create / remove tests",  () => {
+describe.only("create / remove tests",  () => {
 
 	var coll: mongoRx.Collection;	
 	before(() => {
@@ -22,10 +22,19 @@ describe("create / remove tests",  () => {
 			expect(val.test).to.eq("some");  
 		}, null, done);																
 	})
+	
+	it("findAnModify",  (done) => {				
+		coll.findAndModify({query : {test: "some"}, update : {test : "some1"}, new : true})
+		.subscribe((val) => {
+			expect(val).has.property("doc");
+			expect(val.doc).has.property("test", "some1");
+			}, 
+			null, done);																
+	})
 
 	it("remove all tests record",  (done) => {				
 		coll.remove({})
 		.subscribeOnCompleted(done)																
 	})
-		
+			
 }) 

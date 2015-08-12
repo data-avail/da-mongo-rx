@@ -1,6 +1,6 @@
 {
   "name": "da-mongo-rx",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Thin layer on top of mongojs library exposes RxJS interfaces.",
   "main": "dist/mongo-rx.js",
   "directories": {

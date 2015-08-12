@@ -30,7 +30,12 @@ module mongoRx {
 		ok : boolean
 		n : number
 	}
-		
+
+	export interface IFindAndModifyResult {
+		doc : any
+		command : ICommandResult
+	}
+			
 	class Cursor implements ICursor {
 		constructor(private cursor: any) {			
 		}
@@ -113,8 +118,11 @@ module mongoRx {
 			return this.fromNode("update")(query, upd);
 		}
 		
-		findAndModify(upd : any) : Rx.Observable<any> {
-			return this.fromNode("findAndModify")(upd);
+		findAndModify(upd : any) : Rx.Observable<IFindAndModifyResult> {
+			return this.fromNode("findAndModify")(upd)
+			.map<any>((val: any) => {
+				return {doc : val[0], command : val[1]}
+			});
 		}
 	}
 		

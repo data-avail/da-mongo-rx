@@ -48,7 +48,10 @@ var mongoRx;
             return this.fromNode("update")(query, upd);
         };
         Collection.prototype.findAndModify = function (upd) {
-            return this.fromNode("findAndModify")(upd);
+            return this.fromNode("findAndModify")(upd)
+                .map(function (val) {
+                return { doc: val[0], command: val[1] };
+            });
         };
         return Collection;
     })();
