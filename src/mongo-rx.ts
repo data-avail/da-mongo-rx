@@ -108,6 +108,14 @@ module mongoRx {
 		remove(filter: any) : Rx.Observable<any> {
 			return this.fromNode("remove")(filter);
 		} 
+		
+		update(query: any, upd : any) : Rx.Observable<any> {
+			return this.fromNode("update")(query, upd);
+		}
+		
+		findAndModify(upd : any) : Rx.Observable<any> {
+			return this.fromNode("findAndModify")(upd);
+		}
 	}
 		
 	/**

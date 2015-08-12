@@ -19,6 +19,8 @@ declare module mongoRx {
         private fromNode<T>(funcName);
         insert<T>(data: any): Rx.Observable<T>;
         remove(filter: any): Rx.Observable<any>;
+        update(query: any, upd: any): Rx.Observable<any>;
+        findAndModify(upd: any): Rx.Observable<any>;
     }
     class MongoDb {
         private db;

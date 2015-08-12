@@ -44,6 +44,12 @@ var mongoRx;
         Collection.prototype.remove = function (filter) {
             return this.fromNode("remove")(filter);
         };
+        Collection.prototype.update = function (query, upd) {
+            return this.fromNode("update")(query, upd);
+        };
+        Collection.prototype.findAndModify = function (upd) {
+            return this.fromNode("findAndModify")(upd);
+        };
         return Collection;
     })();
     mongoRx.Collection = Collection;
