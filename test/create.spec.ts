@@ -3,15 +3,18 @@
 import chai = require('chai');
 import mongoRx = require('../dist/mongo-rx');
 var expect = chai.expect;
+import Rx = require("rx");
 
 const MONGO_URI = process.env.npm_config_MONGO_URI || process.env.npm_package_config_MONGO_URI;
 
-describe.only("create / remove tests",  () => {
+describe("create / remove tests",  () => {
 
+	var db: mongoRx.MongoDb;
 	var coll: mongoRx.Collection;	
-	before(() => {
-		var db = new mongoRx.MongoDb(MONGO_URI, ["create"]);		
+	before((done) => {
+		db = new mongoRx.MongoDb(MONGO_URI, ["create", "locker"]);		
 		coll = db.getCollection("create")		
+		coll.remove({}).concat(db.getCollection("locker").remove({})).subscribeOnCompleted(done);
 	});
 	
 	it("create some test record",  (done) => {
@@ -36,5 +39,20 @@ describe.only("create / remove tests",  () => {
 		coll.remove({})
 		.subscribeOnCompleted(done)																
 	})
+	
+	it("lock record",  (done) => {
+		Rx.Observable.concat(
+			db.lock("111", "locker"),
+			db.lock("111", "locker"),
+			db.lock("111", "locker")
+		)
+		.toArray()
+		.subscribe((val) => {
+			expect(val).eqls([true, false, false]);
+		}, null, done);						
+																											
+	})
+
+
 			
 }) 

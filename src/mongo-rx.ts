@@ -3,6 +3,9 @@ import Rx = require("rx");
 var mongojs = require('mongojs')
 var RxNode = require("rx-node");
 
+/**
+ * Every method (even write action) must be subscribed to be executed. 
+ */
 module mongoRx {
 		
 	/**
@@ -124,6 +127,7 @@ module mongoRx {
 				return {doc : val[0], command : val[1]}
 			});
 		}
+		
 	}
 		
 	/**
@@ -160,8 +164,32 @@ module mongoRx {
 		 * Run some mongo command.
 		 */		
 		runCommand(command: any) : Rx.Observable<ICommandResult> {
-			return (<any>Rx.Observable).fromNodeCallback(this.db.runCommand)(command);		
-		} 					
+			return (<any>Rx.Observable).fromNodeCallback(this.db.runCommand, this.db)(command);		
+		}
+	
+		/**Create record in collection
+		 * Returns true if record was created and not exists before
+		 * Returns false if record already existed.
+		 * params
+		 * @id Record Id.
+		 * @collName collection name.
+		 * @replicas number of replicas to write record (default 1). 
+		 */
+  		lock(id: string, collName: string, replicas: number = 1): Rx.Observable<boolean> {
+
+            var command = {
+                insert: collName,
+                documents: [{_id: id}],
+                ordered: false,
+                writeConcern: {w: replicas}
+            };
+
+			return this.runCommand(command)
+			.map((r: any) => r.ok && r.n == 1);
+											
+        }		 					
+
+	
 	}
 
 }

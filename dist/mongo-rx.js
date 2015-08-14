@@ -67,7 +67,18 @@ var mongoRx;
             return this.collections[name];
         };
         MongoDb.prototype.runCommand = function (command) {
-            return Rx.Observable.fromNodeCallback(this.db.runCommand)(command);
+            return Rx.Observable.fromNodeCallback(this.db.runCommand, this.db)(command);
+        };
+        MongoDb.prototype.lock = function (id, collName, replicas) {
+            if (replicas === void 0) { replicas = 1; }
+            var command = {
+                insert: collName,
+                documents: [{ _id: id }],
+                ordered: false,
+                writeConcern: { w: replicas }
+            };
+            return this.runCommand(command)
+                .map(function (r) { return r.ok && r.n == 1; });
         };
         return MongoDb;
     })();

@@ -7,7 +7,7 @@ var expect = chai.expect;
 const MONGO_URI = process.env.npm_config_MONGO_URI || process.env.npm_package_config_MONGO_URI;
 
 describe("find tests",  () => {
-
+	
 	var coll: mongoRx.Collection;	
 	before((done) => {
 		var db = new mongoRx.MongoDb(MONGO_URI, ["find"]);		
@@ -42,5 +42,5 @@ describe("find tests",  () => {
 		}, null, done)
 																							
 	})
-		
+			
 }) 

@@ -32,6 +32,7 @@ declare module mongoRx {
         constructor(connectionString: string, collectionNames: string[]);
         getCollection(name: string): Collection;
         runCommand(command: any): Rx.Observable<ICommandResult>;
+        lock(id: string, collName: string, replicas?: number): Rx.Observable<boolean>;
     }
 }
 export = mongoRx;
