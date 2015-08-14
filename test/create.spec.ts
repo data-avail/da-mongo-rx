@@ -23,25 +23,28 @@ describe("create / remove tests",  () => {
 		.subscribe((val: any) => {
 			expect(val).is.exist;
 			expect(val.test).to.eq("some");  
-		}, null, done);																
+		}, null, done);
+		
+		it("findAnModify",  (done) => {				
+			coll.findAndModify({query : {test: "some"}, update : {test : "some1"}, new : true})
+			.subscribe((val) => {
+				expect(val).has.property("doc");
+				expect(val.doc).has.property("test", "some1");
+				}, 
+			done, done);
+			
+			
+			it("remove all tests record",  (done) => {				
+				coll.remove({})
+				.subscribe(() => {}, done, done)
+																	
+			})																
+		})
+																
 	})
 	
-	it("findAnModify",  (done) => {				
-		coll.findAndModify({query : {test: "some"}, update : {test : "some1"}, new : true})
-		.subscribe((val) => {
-			expect(val).has.property("doc");
-			expect(val.doc).has.property("test", "some1");
-			}, 
-			null, done);																
-	})
-
-	it("remove all tests record",  (done) => {				
-		coll.remove({})
-		.subscribeOnCompleted(done)																
-	})
 	
-	//dont work with travis
-	it.skip("lock record",  (done) => {
+	it("lock record",  (done) => {
 		Rx.Observable.concat(
 			db.lock("111", "locker"),
 			db.lock("111", "locker"),
