@@ -25,20 +25,25 @@ describe("create / remove tests",  () => {
 			expect(val.test).to.eq("some");  
 		}, null, done);
 		
-		it("findAnModify",  (done) => {				
-			coll.findAndModify({query : {test: "some"}, update : {test : "some1"}, new : true})
-			.subscribe((val) => {
-				expect(val).has.property("doc");
-				expect(val.doc).has.property("test", "some1");
-				}, 
-			done, done);
-			
-			
-			it("remove all tests record",  (done) => {				
-				coll.remove({})
-				.subscribe(() => {}, done, done)
-																	
-			})																
+		describe("find and modify", () => {
+		
+			it("findAnModify",  (done) => {				
+				coll.findAndModify({query : {test: "some"}, update : {test : "some1"}, new : true})
+				.subscribe((val) => {
+					expect(val).has.property("doc");
+					expect(val.doc).has.property("test", "some1");
+					}, 
+				done, done);
+								
+				describe("remove records", () => {
+					
+					it("remove all tests record",  (done) => {				
+						coll.remove({})
+						.subscribe(() => {}, done, done)
+																			
+					})								
+				})								
+			})			
 		})
 																
 	})
