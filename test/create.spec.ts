@@ -5,7 +5,14 @@ import mongoRx = require('../dist/mongo-rx');
 var expect = chai.expect;
 import Rx = require("rx");
 
-const MONGO_URI = process.env.npm_config_MONGO_URI || process.env.npm_package_config_MONGO_URI;
+function getEnvVar(name: string) : string {
+	return process.env[name] || 
+	process.env["npm_config_" + name] || 
+	process.env["npm_package_config_" + name];	
+}
+
+const MONGO_URI = getEnvVar("MONGO_URI_TEST");
+
 
 describe("create / remove tests",  () => {
 
@@ -13,8 +20,9 @@ describe("create / remove tests",  () => {
 	var coll: mongoRx.Collection;	
 	before((done) => {
 		db = new mongoRx.MongoDb(MONGO_URI, ["create", "locker"]);		
-		coll = db.getCollection("create")		
-		coll.remove({}).concat(db.getCollection("locker").remove({})).subscribeOnCompleted(done);
+		coll = db.getCollection("create");		
+		coll.remove({}).concat(db.getCollection("locker").remove({})).subscribe(
+			() => {}, done, done);
 	});
 	
 	it("create some test record",  (done) => {

@@ -1,17 +1,17 @@
 {
   "name": "da-mongo-rx",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Thin layer on top of mongojs library exposes RxJS interfaces.",
   "main": "dist/mongo-rx.js",
   "directories": {
     "test": "test"
   },
   "config": {
-    "MONGO_URI": "127.0.0.1"
+    "MONGO_URI_TEST": "127.0.0.1"
   },
   "scripts": {
     "build": "gulp build",
-    "test": "gulp test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

@@ -4,7 +4,13 @@ import chai = require('chai');
 import mongoRx = require('../dist/mongo-rx');
 var expect = chai.expect;
 
-const MONGO_URI = process.env.npm_config_MONGO_URI || process.env.npm_package_config_MONGO_URI;
+function getEnvVar(name: string) : string {
+	return process.env[name] || 
+	process.env["npm_config_" + name] || 
+	process.env["npm_package_config_" + name];	
+}
+
+const MONGO_URI = getEnvVar("MONGO_URI_TEST");
 
 describe("find tests",  () => {
 	
