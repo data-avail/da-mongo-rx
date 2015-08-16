@@ -29,6 +29,44 @@ module mongoRx {
 		toArray<T>():  Rx.Observable<T[]>
 	}   
 	
+	export interface IBulkFind {
+		
+		remove() : any
+		
+		removeOne() : any
+		
+		replaceOne() : any
+		
+		update(updaterParam: any) : any
+		
+		updateOne(updaterParam: any) : any
+		
+		upsert(upsertParam: any) : any		
+	}
+	
+	export interface IBulkResult { 
+		writeErrors: any[],
+		writeConcernErrors: any[],
+		nInserted: number,
+		nUpserted: number,
+		nMatched: number,
+		nModified: number,
+		nRemoved: number,
+		upserted: any[],
+		ok: number 
+	}
+	
+	export interface IBulk {
+		
+		execute() : Rx.Observable<any>
+
+		find(query: any) : IBulkFind
+				
+		insert(document: any) : any
+		
+		toString(): string		
+	}
+	
 	export interface ICommandResult {
 		ok : boolean
 		n : number
@@ -66,6 +104,39 @@ module mongoRx {
 		toArray<T>():  Rx.Observable<T[]> {
 			return this.fromNode<T[]>("toArray")();
 		}		
+	}
+	
+		
+	class Bulk implements IBulk {
+		
+		private bulk: any;
+		
+		constructor(coll: any) {
+			this.bulk = coll.initializeOrderedBulkOp();  			
+		}
+		
+		/**
+		 * Convert nodeCallback collection function to Rx.Observable object
+		 */
+		private fromNode<T>(funcName: string) : (arg1?: any, arg2?: any, arg3?: any) => Rx.Observable<T> {
+			return (<any>Rx.Observable).fromNodeCallback(this.bulk[funcName], this.bulk);
+		}
+		
+		execute() : Rx.Observable<any> {
+			return this.fromNode<any>("execute")();
+		}
+
+		find(query: any) : IBulkFind {
+			return this.bulk.find(query);
+		}
+				
+		insert(document: any) : void {
+			return this.bulk.insert(document);
+		}
+		
+		toString(): string {
+			return this.bulk.toString();
+		} 				
 	}
 	
 	/**
@@ -128,6 +199,13 @@ module mongoRx {
 			});
 		}
 		
+		/**
+		 * Start bulk operation
+		 */
+		bulk() : IBulk {
+			return new Bulk(this.coll);
+		}
+		
 	}
 		
 	/**
@@ -188,8 +266,6 @@ module mongoRx {
 			.map((r: any) => r.ok && r.n == 1);
 											
         }		 					
-
-	
 	}
 
 }
