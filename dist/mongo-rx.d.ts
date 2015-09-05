@@ -137,7 +137,7 @@ declare module mongoRx {
         /**
          * Key field must be unique on target collection
          */
-        insertUniqueDocumentWithKey(key: string, targetCollection: string, keySelector?: (prevKey: any) => any): Rx.Observable<number>;
+        insertUniqueDocumentWithKey(key: string, targetCollection: string, keySelector?: (prevKey: any) => any): Rx.Observable<any>;
     }
 }
 export = mongoRx;

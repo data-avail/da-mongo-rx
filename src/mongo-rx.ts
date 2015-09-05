@@ -291,19 +291,19 @@ module mongoRx {
 		/**
 		 * Key field must be unique on target collection
 		 */
-		insertUniqueDocumentWithKey(key: string, targetCollection: string, keySelector?: (prevKey: any) => any ) : Rx.Observable<number> {
+		insertUniqueDocumentWithKey(key: string, targetCollection: string, keySelector?: (prevKey: any) => any ) : Rx.Observable<any> {
 						
 			var coll = this.getCollection(targetCollection); 
 			var selector = (val: any) => keySelector ? keySelector(val) : (val ? val + 1 : 1);
 			var cursor = coll.find({}, { _id: 1 }).sort( { _id: -1 }).limit(1);
-													
+										
+			//TODO : check 11000 exception !													
 			return cursor.query<{_id: any}>()
 			.defaultIfEmpty({_id: null})
 			.first()									
 			.map(val => selector(val._id))
 			.map(val => {return {_id : val, key: key}})
-			.flatMap(val => coll.insert(val))			
-			.do(res => console.log(res))		 
+			.flatMap(val => coll.insert(val))					 
 			.map((res: any) => res.writeError ? Rx.Observable.throw(res) : res._id)
 			.retryWhen(errs => errs.some(val => val.writeError.code == 11000));
 		}
