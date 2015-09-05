@@ -19,8 +19,9 @@ describe.only("insert-uniq-doc test",  () => {
 	var db: mongoRx.MongoDb;	
 	
 	before((done) => {
-		db = new mongoRx.MongoDb(MONGO_URI, ["uniq"]);
-		db.getCollection("uniq").remove({})
+		db = new mongoRx.MongoDb(MONGO_URI, ["uniq", "uniq2"]);
+		db.getCollection("uniq").remove({}).merge(
+		db.getCollection("uniq2").remove({}))
 		.subscribeOnCompleted(done);
 				
 	});
@@ -32,13 +33,15 @@ describe.only("insert-uniq-doc test",  () => {
 			, done, done);																																			
 	})
 	
-	/*
-	it("insert 2 docs with the same key",  (done) => {
+
+	it("insert 2 docs",  (done) => {
 		db.insertUniqueDocumentWithKey("111", "uniq2")
+		.concat(db.insertUniqueDocumentWithKey("222", "uniq2"))
+		.bufferWithCount(2)
 		.subscribe(val =>
-			expect(val).eql({ _id: '111', key: 1 }) 
+			expect(val).eql([1, 2]) 
 			, done, done);																																			
 	})
-	*/
+
 	
 });
