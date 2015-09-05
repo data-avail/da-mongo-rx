@@ -30,9 +30,10 @@ describe("find tests",  () => {
 	
 	it("find records as array",  (done) => {
 						
-		coll.find({}).toArray<any[]>()
+		coll.find({}).sort({name: 1}).toArray<any[]>()
 		.subscribe((val) => {
 			expect(val).has.lengthOf(3); 
+			console.log(val);
 			expect(val[0]).has.property("name");
 			expect((<any>val[0]).name).to.eq("aaa"); 
 		}, null, done)

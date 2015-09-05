@@ -14,7 +14,7 @@ const MONGO_URI = getEnvVar("MONGO_URI_TEST");
 
 console.log(MONGO_URI);
 
-describe.only("insert-uniq-doc test",  () => {
+describe("insert-uniq-doc test",  () => {
 	
 	var db: mongoRx.MongoDb;	
 	

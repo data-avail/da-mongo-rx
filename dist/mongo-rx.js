@@ -199,6 +199,7 @@ var mongoRx;
                 .map(function (val) { return selector(val._id); })
                 .map(function (val) { return { _id: val, key: key }; })
                 .flatMap(function (val) { return coll.insert(val); })
+                .do(function (res) { return console.log(res); })
                 .map(function (res) { return res.writeError ? Rx.Observable.throw(res) : res._id; })
                 .retryWhen(function (errs) { return errs.some(function (val) { return val.writeError.code == 11000; }); });
         };

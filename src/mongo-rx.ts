@@ -287,6 +287,7 @@ module mongoRx {
 		*/
 		
 		
+		
 		/**
 		 * Key field must be unique on target collection
 		 */
@@ -301,7 +302,8 @@ module mongoRx {
 			.first()									
 			.map(val => selector(val._id))
 			.map(val => {return {_id : val, key: key}})
-			.flatMap(val => coll.insert(val))					 
+			.flatMap(val => coll.insert(val))			
+			.do(res => console.log(res))		 
 			.map((res: any) => res.writeError ? Rx.Observable.throw(res) : res._id)
 			.retryWhen(errs => errs.some(val => val.writeError.code == 11000));
 		}

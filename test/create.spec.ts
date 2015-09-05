@@ -58,12 +58,13 @@ describe("create / remove tests",  () => {
 	
 	
 	it("lock record",  (done) => {
+		
 		Rx.Observable.concat(
 			db.lock("111", "locker"),
 			db.lock("111", "locker"),
 			db.lock("111", "locker")
 		)
-		.toArray()
+		.bufferWithCount(3)	
 		.subscribe((val) => {
 			expect(val).eqls([true, false, false]);
 		}, done, done);						

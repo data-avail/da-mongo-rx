@@ -14,16 +14,21 @@ const MONGO_URI = getEnvVar("MONGO_URI_TEST");
 
 describe("bulk tests",  () => {
 	
-	var coll: mongoRx.Collection;	
+	var coll1: mongoRx.Collection;	
+	var coll2: mongoRx.Collection;
 	before((done) => {
 		var db = new mongoRx.MongoDb(MONGO_URI, ["bulk"]);		
-		coll = db.getCollection("bulk");
-		coll.remove({}).subscribe(() => {}, done, done);
+		coll1 = db.getCollection("bulk1");
+		coll2 = db.getCollection("bulk2");
+		Rx.Observable.concat(
+			coll1.remove({}),
+			coll2.remove({}))
+			.doOnCompleted(done);
 	});
 	
 	
 	it("create portf / insert pos / remove zero pos",  (done) => {						
-		var bulk = coll.bulk();
+		var bulk = coll1.bulk();
 
 		//insert new portf 1		
 		bulk.insert({_id : "1", val : 0, positions : [] } );
@@ -46,7 +51,7 @@ describe("bulk tests",  () => {
 	
 	it("insert portf / create portf / insert pos / remove zero pos",  (done) => {
 
-		var bulk = coll.bulk();
+		var bulk = coll2.bulk();
 		
 		//insert new portf 1		
 		bulk.insert({_id : "2", val : 0, positions : [] } );
@@ -58,7 +63,7 @@ describe("bulk tests",  () => {
 		//remove positions with val == 0
 		bulk.find({_id : "2", "positions.vals" : 0}).update({$pull: {positions : {vals: 0 } }});
 		
-		coll.insert({_id : "2", val : -10, positions : [{positions: {ticket : "A", vals : [10]}}] })
+		coll2.insert({_id : "2", val : -10, positions : [{positions: {ticket : "A", vals : [10]}}] })
 		.concat(bulk.execute())
 		.skip(1).subscribe((val: mongoRx.IBulkResult) => {
 			expect(val.ok).eq(1);
