@@ -1,4 +1,4 @@
-
+/// <reference path="../typings/tsd.d.ts" />
 import Rx = require("rx");
 /**
  * Every method (even write action) must be subscribed to be executed.
@@ -74,7 +74,7 @@ declare module mongoRx {
          * Mongo query json
          * @return Cursor object
          */
-        find(query: any): ICursor;
+        find(query: any, select?: any): ICursor;
         /**
          * Convert nodeCallback collection function to Rx.Observable object
          */
@@ -134,6 +134,10 @@ declare module mongoRx {
          * @replicas number of replicas to write record (default 1).
          */
         lock(id: string, collName: string, replicas?: number): Rx.Observable<boolean>;
+        /**
+         * Key field must be unique on target collection
+         */
+        insertUniqueDocumentWithKey(_id: string, targetCollection: string, keySelector?: (prevKey: any) => any): Rx.Observable<number>;
     }
 }
 export = mongoRx;

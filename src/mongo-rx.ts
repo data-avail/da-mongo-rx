@@ -86,15 +86,18 @@ module mongoRx {
 		}
 				
 		sort(sort: any) : ICursor {
-			return this.cursor.sort(sort);
+			this.cursor.sort(sort);
+			return this;
 		}
 		
 		limit(count: number) : ICursor {
-			return this.cursor.limit(count);
+			this.cursor.limit(count);
+			return this;
 		}
 		
 		skip(count: number) : ICursor {
-			return this.cursor.limit(count);
+			this.cursor.skip(count);
+			return this;
 		}
 				
 		query<T>():  Rx.Observable<T> {
@@ -157,8 +160,8 @@ module mongoRx {
 		 * Mongo query json
 		 * @return Cursor object 
 		 */						
-		find(query: any) : ICursor {						
-			return new Cursor(this.coll.find(query));									
+		find(query: any, select?: any) : ICursor {						
+			return new Cursor(this.coll.find(query, select));									
 		}					
 		
 		/**
@@ -265,9 +268,44 @@ module mongoRx {
 			return this.runCommand(command)
 			.map((r: any) => r.ok && r.n == 1);
 											
-        }		 					
-	}
+        }	
+		
+		//http://docs.mongodb.org/master/tutorial/create-an-auto-incrementing-field/
+		
+		/*
+		insertDocumentWithNumberId(doc: any, targetCollection: string) : Rx.Observable<any> {
+			
+			var coll = this.getCollection(targetCollection); 
 
+			return coll.find({}, { _id: 1 }).sort( { _id: -1 } ).limit(1)
+			.toArray()
+			.map((val: number[]) => {doc._id = val[0] + 1; return doc})
+			.flatMap(val => coll.insert(val))
+			//.doWhile((res: any) => res.writeError.code == 11000) 
+			.map((res: any) => res.writeError ? Rx.Observable.throw(res) : res);
+		}
+		*/
+		
+		
+		/**
+		 * Key field must be unique on target collection
+		 */
+		insertUniqueDocumentWithKey(_id: string, targetCollection: string, keySelector?: (prevKey: any) => any ) : Rx.Observable<number> {
+						
+			var coll = this.getCollection(targetCollection); 
+			var selector = (val: any) => keySelector ? keySelector(val) : (val ? val + 1 : 1);
+			var cursor = coll.find({}, { key: 1 }).sort( { key: -1 }).limit(1);
+													
+			return cursor.query<{key: any}>()
+			.defaultIfEmpty({key: null})
+			.first()									
+			.map(val => selector(val.key))
+			.map(val => {return {_id : _id, key: val}})
+			.flatMap(val => coll.insert(val))					 
+			.map((res: any) => res.writeError ? Rx.Observable.throw(res) : res.key)
+			.retryWhen(errs => errs.some(val => val.writeError.code == 11000));
+		}
+	}		
 }
 
 export = mongoRx;

@@ -1,4 +1,4 @@
-
+///<reference path="../typings/tsd.d.ts"/>
 var Rx = require("rx");
 var mongojs = require('mongojs');
 var RxNode = require("rx-node");
@@ -15,13 +15,16 @@ var mongoRx;
             return Rx.Observable.fromNodeCallback(this.cursor[funcName], this.cursor);
         };
         Cursor.prototype.sort = function (sort) {
-            return this.cursor.sort(sort);
+            this.cursor.sort(sort);
+            return this;
         };
         Cursor.prototype.limit = function (count) {
-            return this.cursor.limit(count);
+            this.cursor.limit(count);
+            return this;
         };
         Cursor.prototype.skip = function (count) {
-            return this.cursor.limit(count);
+            this.cursor.skip(count);
+            return this;
         };
         Cursor.prototype.query = function () {
             return RxNode.fromReadableStream(this.cursor);
@@ -73,8 +76,8 @@ var mongoRx;
          * Mongo query json
          * @return Cursor object
          */
-        Collection.prototype.find = function (query) {
-            return new Cursor(this.coll.find(query));
+        Collection.prototype.find = function (query, select) {
+            return new Cursor(this.coll.find(query, select));
         };
         /**
          * Convert nodeCallback collection function to Rx.Observable object
@@ -168,6 +171,36 @@ var mongoRx;
             };
             return this.runCommand(command)
                 .map(function (r) { return r.ok && r.n == 1; });
+        };
+        //http://docs.mongodb.org/master/tutorial/create-an-auto-incrementing-field/
+        /*
+        insertDocumentWithNumberId(doc: any, targetCollection: string) : Rx.Observable<any> {
+            
+            var coll = this.getCollection(targetCollection);
+
+            return coll.find({}, { _id: 1 }).sort( { _id: -1 } ).limit(1)
+            .toArray()
+            .map((val: number[]) => {doc._id = val[0] + 1; return doc})
+            .flatMap(val => coll.insert(val))
+            //.doWhile((res: any) => res.writeError.code == 11000)
+            .map((res: any) => res.writeError ? Rx.Observable.throw(res) : res);
+        }
+        */
+        /**
+         * Key field must be unique on target collection
+         */
+        MongoDb.prototype.insertUniqueDocumentWithKey = function (_id, targetCollection, keySelector) {
+            var coll = this.getCollection(targetCollection);
+            var selector = function (val) { return keySelector ? keySelector(val) : (val ? val + 1 : 1); };
+            var cursor = coll.find({}, { key: 1 }).sort({ key: -1 }).limit(1);
+            return cursor.query()
+                .defaultIfEmpty({ key: null })
+                .first()
+                .map(function (val) { return selector(val.key); })
+                .map(function (val) { return { _id: _id, key: val }; })
+                .flatMap(function (val) { return coll.insert(val); })
+                .map(function (res) { return res.writeError ? Rx.Observable.throw(res) : res.key; })
+                .retryWhen(function (errs) { return errs.some(function (val) { return val.writeError.code == 11000; }); });
         };
         return MongoDb;
     })();
