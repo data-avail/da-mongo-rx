@@ -190,6 +190,7 @@ var mongoRx;
          * Key field must be unique on target collection
          */
         MongoDb.prototype.insertUniqueDocumentWithKey = function (key, targetCollection, keySelector) {
+            var _this = this;
             var coll = this.getCollection(targetCollection);
             var selector = function (val) { return keySelector ? keySelector(val) : (val ? val + 1 : 1); };
             var cursor = coll.find({}, { _id: 1 }).sort({ _id: -1 }).limit(1);
@@ -200,8 +201,11 @@ var mongoRx;
                 .map(function (val) { return selector(val._id); })
                 .map(function (val) { return { _id: val, key: key }; })
                 .flatMap(function (val) { return coll.insert(val); })
-                .map(function (res) { return res.writeError ? Rx.Observable.throw(res) : res._id; })
-                .retryWhen(function (errs) { return errs.some(function (val) { return val.writeError.code == 11000; }); });
+                .map(function (res) { return res._id; })
+                .catch(function (err) {
+                if (err.code == 11000)
+                    return _this.insertUniqueDocumentWithKey(key, targetCollection, keySelector);
+            });
         };
         return MongoDb;
     })();

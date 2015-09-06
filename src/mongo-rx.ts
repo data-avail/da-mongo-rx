@@ -304,8 +304,11 @@ module mongoRx {
 			.map(val => selector(val._id))
 			.map(val => {return {_id : val, key: key}})
 			.flatMap(val => coll.insert(val))					 
-			.map((res: any) => res.writeError ? Rx.Observable.throw(res) : res._id)
-			.retryWhen(errs => errs.some(val => val.writeError.code == 11000));
+			.map((res: any) => res._id)
+			.catch(err => {
+				if (err.code == 11000)
+					return this.insertUniqueDocumentWithKey(key, targetCollection, keySelector); 
+			});
 		}
 	}		
 }
