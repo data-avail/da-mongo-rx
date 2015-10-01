@@ -1,4 +1,4 @@
-
+///<reference path="../typings/tsd.d.ts"/>
 var Rx = require("rx");
 var mongojs = require('mongojs');
 var RxNode = require("rx-node");
