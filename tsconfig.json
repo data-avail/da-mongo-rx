@@ -11,6 +11,7 @@
     "outDir": "./dist"
   },
   "files" : [
+    "typings/tsd.d.ts",
     "src/mongo-rx.ts"
   ]
 }

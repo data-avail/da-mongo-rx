@@ -1,4 +1,3 @@
-///<reference path="../typings/tsd.d.ts"/>
 import Rx = require("rx");
 var mongojs = require('mongojs');
 var RxNode = require("rx-node");

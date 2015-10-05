@@ -1,4 +1,3 @@
-/// <reference path="../typings/tsd.d.ts" />
 import Rx = require("rx");
 /**
  * Every method (even write action) must be subscribed to be executed.
